@@ -45,6 +45,14 @@ contract Ballot {
         voters[voter].weight = 1;
     }
 
+    // 设置选民的投票权重
+    function setVoterWeight(address voter, uint weight) external {
+        require(msg.sender == chairperson, "Only chairperson can set voter weight");
+        require(block.timestamp < startTime, "Cannot set weight after voting has started");
+        require(weight > 0, "Weight must be greater than zero");
+        voters[voter].weight = weight;
+    }
+
     function delegate(address to) external {
         Voter storage sender = voters[msg.sender];
         require(sender.weight != 0, "You have no rtght to vote");
